@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="estilos.css">
+	<title>Sitio de peliculas</title>
+</head>
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Barra de búsqueda de películas</title>
+</head>
+<body>
+	<h1>Busca tu película favorita</h1>
+	<form>
+		<input type="text" name="titulo" placeholder="Introduce el título de la película">
+		<input type="submit" value="Buscar">
+	</form>
+	<div id="resultado"></div>
+</body>
+</html>
+
+
+
+<div style="text-align: center;">
+	<h2>PELICULAS MAS VISTAS DE LA SEMANA</h2>
+	
+  </div>
+<body>
+	<div class="contenedor" id="contenedor"></div>
+
+	<div class="paginacion">
+		<button id="btnAnterior">Anterior</button>
+		<button id="btnSiguiente">Siguiente</button>
+	</div>
+
+	<script src="app.js"></script>
+</body>
+</html>
+
+<script>
+	const form = document.querySelector('form');
+	const input = document.querySelector('input');
+	const resultado = document.querySelector('#resultado');
+
+	form.addEventListener('submit', buscarPelicula);
+
+	function buscarPelicula(e) {
+		e.preventDefault();
+		const busqueda = input.value;
+		const apiKey = 'a7d87cdfc6c7e29bfebe32ea7ce329a9'; // Reemplaza 'tu_clave_api' con tu clave API de TMDb
+		const url = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${busqueda}&language=es-ES`;
+
+		fetch(url)
+			.then(response => response.json())
+			.then(data => mostrarResultados(data));
+	}
+
+	function mostrarResultados(data) {
+		resultado.innerHTML = '';
+		const peliculas = data.results;
+
+		peliculas.forEach(pelicula => {
+			const { title, overview, poster_path, vote_average } = pelicula;
+
+			const div = document.createElement('div');
+			div.classList.add('pelicula');
+
+			div.innerHTML = `
+				<h2>${title}</h2>
+				<img src="https://image.tmdb.org/t/p/w500/${poster_path}" alt="${title}">
+				<p>${overview}</p>
+				<p>Puntuación: ${vote_average}</p>
+			`;
+
+			resultado.appendChild(div);
+		});
+	}
+</script>
+
+
+
+
+
+
+
+
